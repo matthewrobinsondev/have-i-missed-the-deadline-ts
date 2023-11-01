@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      args:
+        NODE_VERSION: ${BUN_NODE_VERSION:-18}
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
