@@ -1,5 +1,6 @@
 import { FplService } from "../src/app/fpl/FplService";
 import { jest, expect, describe, beforeEach, it } from "bun:test";
+import { TestHelper } from "./TestHelper";
 
 describe("FplService", () => {
   let fplService: FplService;
@@ -34,6 +35,7 @@ describe("FplService", () => {
           },
         ],
       };
+
       fplApiMock.getGeneralInformation.mockResolvedValueOnce(
         generalInformation
       );
@@ -65,6 +67,7 @@ describe("FplService", () => {
           },
         ],
       };
+
       fplApiMock.getGeneralInformation.mockResolvedValueOnce(
         generalInformation
       );
@@ -73,6 +76,40 @@ describe("FplService", () => {
 
       // Epoch timestamp for 18th August 17:15:00
       expect(result).toBe(1692378900000);
+    });
+  });
+
+  describe("getTopTransferredIn", () => {
+    it("should return the top 10 transferred in", async () => {
+      const generalInformation = {
+        elements: TestHelper.generatePlayerResponse(),
+      };
+
+      fplApiMock.getGeneralInformation.mockResolvedValueOnce(
+        generalInformation
+      );
+
+      const result = await fplService.getTopTransferredIn();
+
+      expect(result.length).toEqual(10)
+      expect(result).toMatchSnapshot();
+    });
+  });
+
+  describe("getTopTransferredOut", () => {
+    it("should return the top 10 transferred out", async () => {
+      const generalInformation = {
+        elements: TestHelper.generatePlayerResponse(),
+      };
+
+      fplApiMock.getGeneralInformation.mockResolvedValueOnce(
+        generalInformation
+      );
+
+      const result = await fplService.getTopTransferredOut();
+
+      expect(result.length).toEqual(10)
+      expect(result).toMatchSnapshot();
     });
   });
 });
