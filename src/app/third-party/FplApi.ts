@@ -1,12 +1,15 @@
-import axios from "axios";
+import axiosInstance from "./FplAxiosConfig";
 
 class FplApi implements FplApiInterface {
-  public async getGeneralInformation(): Promise<any> {
-    const response = await axios.get(
-      "https://fantasy.premierleague.com/api/bootstrap-static/"
-    );
+  constructor(private FplAxiosInstance = axiosInstance) {}
 
-    return await response.data;
+  public async getGeneralInformation(): Promise<any> {
+    try {
+      const response = await this.FplAxiosInstance.get("bootstrap-static/");
+      return response.data;
+    } catch (error) {
+      throw new Error("Failed to fetch data from the FPL API.");
+    }
   }
 }
 
