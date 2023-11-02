@@ -1,3 +1,4 @@
+import { UserButton } from "@clerk/nextjs";
 import Countdown from "./components/Countdown";
 import { TransferTable } from "./components/TransferTable";
 import { FplService } from "./fpl/FplService";
@@ -12,6 +13,9 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div>
+        <UserButton afterSignOutUrl="/" />
+      </div>
       <Countdown deadline={deadline} />
       <TransferTable
         transferredPlayers={topTransferredIn}
