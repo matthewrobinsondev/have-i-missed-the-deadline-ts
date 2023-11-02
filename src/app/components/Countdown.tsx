@@ -39,7 +39,7 @@ const Countdown: React.FC<CountdownProps> = ({ deadline }) => {
                 <p className="text-red-700"> The deadline has passed </p>
             ) : (
                 <p className="text-green-700">
-                    The deadline is in {remainingTime} seconds
+                    The deadline is in {remainingTime}
                 </p>
             )}
         </div>
