@@ -30,8 +30,9 @@ export class FplService {
     currentGameweek: Event,
     nextGameweek: Event
   ): number {
+
     return currentGameweek.finished
-      ? nextGameweek.deadline_time_epoch
-      : currentGameweek.deadline_time_epoch;
+      ? Date.parse(nextGameweek.deadline_time)
+      : Date.parse(currentGameweek.deadline_time);
   }
 }

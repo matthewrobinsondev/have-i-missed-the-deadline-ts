@@ -21,6 +21,7 @@ describe("FplService", () => {
             is_current: true,
             is_next: false,
             finished: true,
+            deadline_time: "2023-08-18T17:15:00Z",
             deadline_time_epoch: 1000,
           },
           {
@@ -28,6 +29,7 @@ describe("FplService", () => {
             is_current: false,
             is_next: true,
             finished: false,
+            deadline_time: "2023-08-25T17:15:00Z",
             deadline_time_epoch: 2000,
           },
         ],
@@ -38,7 +40,8 @@ describe("FplService", () => {
 
       const result = await fplService.getDeadline();
 
-      expect(result).toBe(2000);
+      // Epoch timestamp for 25th August 17:15:00
+      expect(result).toBe(1692983700000);
     });
 
     it("should return current gameweek deadline if current gameweek is not finished", async () => {
@@ -49,6 +52,7 @@ describe("FplService", () => {
             is_current: true,
             is_next: false,
             finished: false,
+            deadline_time: "2023-08-18T17:15:00Z",
             deadline_time_epoch: 1000,
           },
           {
@@ -56,6 +60,7 @@ describe("FplService", () => {
             is_current: false,
             is_next: true,
             finished: false,
+            deadline_time: "2023-08-25T17:15:00Z",
             deadline_time_epoch: 2000,
           },
         ],
@@ -66,7 +71,8 @@ describe("FplService", () => {
 
       const result = await fplService.getDeadline();
 
-      expect(result).toBe(1000);
+      // Epoch timestamp for 18th August 17:15:00
+      expect(result).toBe(1692378900000);
     });
   });
 });
