@@ -7,7 +7,7 @@ interface CountdownProps {
 }
 
 const Countdown: React.FC<CountdownProps> = ({ deadline }) => {
-    const [remainingSeconds, setRemainingSeconds] = useState<number>(0);
+    const [remainingTime, setRemainingTime] = useState<string>('');
     const [isPastDeadline, setIsPastDeadline] = useState<boolean>(false);
 
     useEffect(() => {
@@ -18,11 +18,15 @@ const Countdown: React.FC<CountdownProps> = ({ deadline }) => {
 
             if (seconds <= 0) {
                 setIsPastDeadline(true);
-                setRemainingSeconds(0);
+                setRemainingTime('');
                 clearInterval(intervalId);
             } else {
                 setIsPastDeadline(false);
-                setRemainingSeconds(seconds);
+                const days = Math.floor(seconds / (3600 * 24));
+                const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+                const remainingSeconds = seconds % 60;
+                setRemainingTime(`${days}d ${hours}h ${minutes}m ${remainingSeconds}s`);
             }
         }, 1000);
 
@@ -35,7 +39,7 @@ const Countdown: React.FC<CountdownProps> = ({ deadline }) => {
                 <p className="text-red-700"> The deadline has passed </p>
             ) : (
                 <p className="text-green-700">
-                    The deadline is in {remainingSeconds} seconds
+                    The deadline is in {remainingTime} seconds
                 </p>
             )}
         </div>
