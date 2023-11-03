@@ -3,7 +3,7 @@ import { log } from "next-axiom";
 class FplApi implements FplApiInterface {
   public async getGeneralInformation(): Promise<any> {
     try {
-      const response = await fetch("https://have-i-missed-the-deadline-ts.vercel.app/fpl", {
+      const response = await fetch(`${process.env.APPLICATION_URL}/fpl`, {
         next: { revalidate: 300 },
       });
 
