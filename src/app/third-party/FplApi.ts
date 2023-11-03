@@ -1,9 +1,6 @@
 import { log } from "next-axiom";
-import axiosInstance from "./FplAxiosConfig";
 
 class FplApi implements FplApiInterface {
-  constructor(private FplAxiosInstance = axiosInstance) {}
-
   public async getGeneralInformation(): Promise<any> {
     try {
       const response = await fetch("https://have-i-missed-the-deadline-ts.vercel.app/fpl", {
