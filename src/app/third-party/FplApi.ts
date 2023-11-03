@@ -6,7 +6,7 @@ class FplApi implements FplApiInterface {
 
   public async getGeneralInformation(): Promise<any> {
     try {
-      const response = await fetch("http://localhost:3000/fpl", {
+      const response = await fetch("https://have-i-missed-the-deadline-ts.vercel.app/fpl", {
         next: { revalidate: 300 },
       });
 
