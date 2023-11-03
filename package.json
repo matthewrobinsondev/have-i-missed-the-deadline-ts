@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.26.2",
+    "@heroicons/react": "^2.0.18",
     "axios": "^1.6.0",
     "next": "14.0.1",
     "next-axiom": "^1.1.0",

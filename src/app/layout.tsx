@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AxiomWebVitals } from "next-axiom";
+import NavigationBar from "./components/NavigationBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,13 +17,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // bree / bison
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <AxiomWebVitals />
-
+        <body className="font-sans bg-slate-50 dark:bg-slate-700">
+          <NavigationBar />
           {children}
+          <AxiomWebVitals />
         </body>
       </html>
     </ClerkProvider>
