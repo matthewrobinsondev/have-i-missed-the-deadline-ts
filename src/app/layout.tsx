@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AxiomWebVitals } from "next-axiom";
 import NavigationBar from "./components/NavigationBar";
+import dynamic from "next/dynamic";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,6 +12,9 @@ export const metadata: Metadata = {
   title: "Have I missed the deadline?",
   description: "FPL Deadline tracker application.",
 };
+
+const DynamicNavigationBar = dynamic(() => import("./components/NavigationBar"), { ssr: false });
+
 
 export default function RootLayout({
   children,
@@ -22,7 +26,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="font-sans bg-slate-50 dark:bg-slate-700">
-          <NavigationBar />
+          <DynamicNavigationBar />
           {children}
           <AxiomWebVitals />
         </body>
