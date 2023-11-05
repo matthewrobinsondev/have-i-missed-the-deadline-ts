@@ -14,12 +14,18 @@
   "dependencies": {
     "@clerk/nextjs": "^4.26.2",
     "@heroicons/react": "^2.0.18",
+    "@prisma/client": "5.5.2",
+    "@tanstack/react-query": "^4.32.6",
+    "@trpc/client": "^10.37.1",
+    "@trpc/react-query": "^10.37.1",
+    "@trpc/server": "^10.37.1",
     "axios": "^1.6.0",
     "next": "14.0.1",
     "next-axiom": "^1.1.0",
     "prisma": "^5.5.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "typescript": "^5",

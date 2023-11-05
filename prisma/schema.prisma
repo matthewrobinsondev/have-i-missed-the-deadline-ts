@@ -17,6 +17,7 @@ model UserUpdatePreference {
   reminder_schedule   ReminderSchedule @relation(fields: [reminder_schedule_id], references: [reminder_schedule_id])
   
   @@map("user_update_preference")
+  @@index([user_id])
   @@index([reminder_type_id])
   @@index([reminder_schedule_id])
 }

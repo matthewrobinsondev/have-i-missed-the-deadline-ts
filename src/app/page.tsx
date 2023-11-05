@@ -1,9 +1,7 @@
-import { SignInButton, SignOutButton, UserButton, auth, currentUser } from "@clerk/nextjs";
 import Countdown from "./components/Countdown";
 import { TransferTable } from "./components/TransferTable";
 import { FplService } from "./fpl/FplService";
 import FplApi from "./third-party/FplApi";
-import { log } from "next-axiom";
 
 export default async function Home() {
   const fplApi = new FplApi();
@@ -11,7 +9,6 @@ export default async function Home() {
   const deadline = await fplService.getDeadline();
   const topTransferredIn = await fplService.getTopTransferredIn();
   const topTransferredOut = await fplService.getTopTransferredOut();
-  const { userId } = auth();
 
   return (
     <main className="flex flex-col items-center justify-between lg:p-20">

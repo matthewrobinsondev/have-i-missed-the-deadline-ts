@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { AxiomWebVitals } from "next-axiom";
 import NavigationBar from "./components/NavigationBar";
 import dynamic from "next/dynamic";
+import TrpcProvider from "./trpc/provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,8 +14,10 @@ export const metadata: Metadata = {
   description: "FPL Deadline tracker application.",
 };
 
-const DynamicNavigationBar = dynamic(() => import("./components/NavigationBar"), { ssr: false });
-
+const DynamicNavigationBar = dynamic(
+  () => import("./components/NavigationBar"),
+  { ssr: false }
+);
 
 export default function RootLayout({
   children,
@@ -26,9 +29,11 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className="font-sans bg-slate-50 dark:bg-slate-700">
-          <DynamicNavigationBar />
-          {children}
-          <AxiomWebVitals />
+          <TrpcProvider>
+            <DynamicNavigationBar />
+            {children}
+            <AxiomWebVitals />
+          </TrpcProvider>
         </body>
       </html>
     </ClerkProvider>
