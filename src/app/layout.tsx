@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className="font-sans bg-slate-50 dark:bg-slate-700">
+        <body className="font-sans bg-slate-50 bg-gradient-to-r from-purple-300 via-pink-200 to-red-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-950 dark:text-white">
           <TrpcProvider>
             <DynamicNavigationBar />
             {children}

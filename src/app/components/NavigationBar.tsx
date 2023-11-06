@@ -43,7 +43,7 @@ function NavigationBar() {
           {darkMode ? (
             <SunIcon className="h-6 w-6" />
           ) : (
-            <MoonIcon className="h-6 w-6" />
+            <MoonIcon className="h-6 w-6 fill-gray-500 hover:fill-gray-700" />
           )}
         </button>
         {!isSignedIn ? (

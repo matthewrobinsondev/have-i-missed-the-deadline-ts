@@ -3,41 +3,41 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
-model UserUpdatePreference {
-  preference_id       Int       @id @default(autoincrement())
-  user_id             String    @unique @db.VarChar(255)
-  reminder_type_id    Int
+model UserPreferences {
+  preference_id        Int              @id @default(autoincrement())
+  user_id              String           @unique @db.VarChar(255)
+  reminder_type_id     Int
   reminder_schedule_id Int
-  reminder_type       ReminderType @relation(fields: [reminder_type_id], references: [reminder_type_id])
-  reminder_schedule   ReminderSchedule @relation(fields: [reminder_schedule_id], references: [reminder_schedule_id])
-  
-  @@map("user_update_preference")
+  reminder_type        ReminderType     @relation(fields: [reminder_type_id], references: [id])
+  reminder_schedule    ReminderSchedule @relation(fields: [reminder_schedule_id], references: [id])
+
   @@index([user_id])
   @@index([reminder_type_id])
   @@index([reminder_schedule_id])
+  @@map("user_preferences")
 }
 
 model ReminderType {
-  reminder_type_id    Int    @id @default(autoincrement())
-  send_email_reminder Boolean @default(false) // Add default values
-  send_transfer_in    Boolean @default(false)
-  send_transfer_out   Boolean @default(false)
-  preferences UserUpdatePreference[]
+  id                    Int               @id @default(autoincrement())
+  send_fixture_reminder Boolean           @default(false) // Add default values
+  send_transfer_in      Boolean           @default(false)
+  send_transfer_out     Boolean           @default(false)
+  preferences           UserPreferences[]
 
   @@map("reminder_type")
 }
 
 model ReminderSchedule {
-  reminder_schedule_id    Int @id @default(autoincrement())
-  send_1_day_before       Boolean @default(false)
-  send_3_hours_before     Boolean @default(false)
-  send_30_minutes_before  Boolean @default(false)
-  preferences UserUpdatePreference[]
+  id                     Int               @id @default(autoincrement())
+  send_1_day_before      Boolean           @default(false)
+  send_3_hours_before    Boolean           @default(false)
+  send_30_minutes_before Boolean           @default(false)
+  preferences            UserPreferences[]
 
   @@map("reminder_schedule")
 }

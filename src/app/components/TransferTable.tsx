@@ -18,7 +18,7 @@ export const TransferTable: React.FC<Props> = ({ transferredPlayers, column_name
                     <th className="px-2 py-1 text-xs sm:px-6 sm:py-3 font-medium uppercase tracking-wider">{column_name}</th>
                 </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white dark:bg-purple-800 divide-y divide-gray-200">
                 {transferredPlayers.map((player: Player) => (
                     <tr key={player.id}>
                         <td className="px-2 py-1 text-xs sm:px-6 sm:py-4 whitespace-nowrap">{player.first_name}</td>
