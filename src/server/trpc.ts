@@ -23,12 +23,10 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
  *
  * @see https://trpc.io/docs/context
  */
-export const createTRPCContext = (opts: CreateNextContextOptions) => {
-  const { req } = opts;
-  const sesh = getAuth(req);
+export const createTRPCContext = async (opts: CreateNextContextOptions) => {
+  const { userId } : { userId: string | null } = auth();
 
-  const userId = sesh.userId;
-
+console.log('test');
   return {
     db,
     userId,
@@ -42,7 +40,7 @@ export const createTRPCContext = (opts: CreateNextContextOptions) => {
  */
 import { initTRPC, TRPCError } from "@trpc/server";
 import superjson from "superjson";
-import { getAuth } from "@clerk/nextjs/server";
+import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
 import { ZodError } from "zod";
 import { db } from "@/db";
 
@@ -84,7 +82,9 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
-  if (!ctx.userId) {
+  const { userId } : { userId: string | null } = auth();
+
+  if (!ctx.userId && !userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
     });
@@ -92,7 +92,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
 
   return next({
     ctx: {
-      userId: ctx.userId,
+      userId: ctx.userId ?? userId,
     },
   });
 });
