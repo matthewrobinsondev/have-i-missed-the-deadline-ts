@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { createTRPCRouter, privateProcedure, publicProcedure } from "./trpc";
+import { router, privateProcedure, publicProcedure } from "./trpc";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { UserPreferences } from "@prisma/client";
@@ -7,7 +7,7 @@ import { UserPreferencesInput } from "@/app/types/db/UserPreferencesInput";
 
 // @TODO: Refactor this to use specific files for each procedure
 
-export const appRouter = createTRPCRouter({
+export const appRouter = router({
   updateUserPreferences: privateProcedure
     .input(
       z.object({
