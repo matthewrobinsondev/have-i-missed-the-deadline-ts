@@ -17,16 +17,6 @@ export default function Dashboard() {
   };
 
   const handleSubmit = () => {
-    console.log("Checked values:", checkedValues);
-    console.log({
-      send_1_day_before: checkedValues.includes("send_1_day_before"),
-      send_3_hours_before: checkedValues.includes("send_3_hours_before"),
-      send_30_minutes_before: checkedValues.includes("send_30_minutes_before"),
-      send_fixture_reminder: checkedValues.includes("send_fixture_reminder"),
-      send_transfer_in: checkedValues.includes("send_transfer_in"),
-      send_transfer_out: checkedValues.includes("send_transfer_out"),
-    });
-
     updateUserPreferences.mutateAsync(
       {
         send_1_day_before: checkedValues.includes("send_1_day_before"),
