@@ -1,7 +1,7 @@
 import { appRouter } from "@/server";
-import { PrismaClient } from "@prisma/client";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { auth } from "@clerk/nextjs/server";
+import { db } from "@/db";
 
 
 const handler = (req: Request) =>
@@ -10,7 +10,6 @@ const handler = (req: Request) =>
     req,
     router: appRouter,
     createContext: async () => {
-      const db = new PrismaClient();
       const { userId } : { userId: string | null } = auth();
 
       return { db, userId };
