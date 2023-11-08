@@ -26,7 +26,6 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { userId } : { userId: string | null } = auth();
 
-console.log('test');
   return {
     db,
     userId,
