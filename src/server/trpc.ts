@@ -3,8 +3,21 @@ import { auth } from "@clerk/nextjs/server";
 import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
+import { type NextRequest } from "next/server";
 
-const t = initTRPC.create({
+
+export const Context = (opts: { req: NextRequest }) => {
+  // Fetch stuff that depends on the request
+  const { userId } = auth();
+
+  return {
+    headers: opts.req.headers,
+    userId,    
+    db
+  };
+};
+
+const t = initTRPC.context<typeof Context>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     return {
@@ -21,25 +34,13 @@ const t = initTRPC.create({
 const middleware = t.middleware;
 
 const isAuth = middleware(async (opts) => {
-  if (process.env.NODE_ENV === "test") {
-    return opts.next({
-      ctx: {
-        db: opts.ctx.db,
-        userId: opts.ctx.userId,
-      },
-    });
-  }
-  
-  const { userId } = auth();
-
-  if (!userId) {
+  if (!opts.ctx.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
   return opts.next({
     ctx: {
-      db,
-      userId: userId,
+      ...opts.ctx,
     },
   });
 });
