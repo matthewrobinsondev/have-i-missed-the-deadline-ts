@@ -3,7 +3,6 @@ import { privateProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { Prisma, PrismaClient, UserPreferences } from "@prisma/client";
 import { UserPreferencesInput } from "@/app/types/db/UserPreferencesInput";
-import { db } from "@/db";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const UserPreferencesRouter = router({
@@ -37,6 +36,42 @@ export const UserPreferencesRouter = router({
       }
 
       return createUserPreferences(userId, input, ctx.db);
+    }),
+    getUserPreferences: privateProcedure
+    .query(async ({ ctx }) => {
+      const userId = ctx.userId;
+
+      if (!userId) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "User not authenticated",
+        });
+      }
+
+      const getUserPreferences = await ctx.db.userPreferences.findUnique({
+        where: { user_id: userId },
+      });
+
+      if (!getUserPreferences) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User preferences not found",
+        });
+      }
+
+      getUserPreferences.reminder_type = await ctx.db.reminderType.findUnique({
+        where: { id: getUserPreferences.reminder_type_id },
+      });
+
+      getUserPreferences.reminder_schedule = await ctx.db.reminderSchedule.findUnique({
+        where: { id: getUserPreferences.reminder_schedule_id },
+      });
+
+      return {
+        ...getUserPreferences.id,
+        ...getUserPreferences.reminder_type,
+        ...getUserPreferences.reminder_schedule,
+      };
     }),
 });
 
