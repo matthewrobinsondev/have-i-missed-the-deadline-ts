@@ -24,7 +24,7 @@ export default async function Home() {
           column_name="Transfers Out"
           field="transfers_out_event"
         />
-    </div>
+      </div>
     </main>
   );
 }

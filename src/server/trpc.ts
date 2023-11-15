@@ -4,16 +4,18 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { type NextRequest } from "next/server";
-
+import { FplService } from "@/app/fpl/FplService";
+import FplApi from "@/app/third-party/FplApi";
 
 export const Context = (opts: { req: NextRequest }) => {
-  // Fetch stuff that depends on the request
   const { userId } = auth();
+  const fplService = new FplService(new FplApi());
 
   return {
     headers: opts.req.headers,
     userId,    
-    db
+    db,
+    fplService
   };
 };
 
