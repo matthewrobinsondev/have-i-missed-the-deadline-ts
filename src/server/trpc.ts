@@ -6,16 +6,20 @@ import { ZodError } from "zod";
 import { type NextRequest } from "next/server";
 import { FplService } from "@/app/fpl/FplService";
 import FplApi from "@/app/third-party/FplApi";
+import TwilioApi from "@/app/third-party/TwilioApi";
 
 export const Context = (opts: { req: NextRequest }) => {
   const { userId } = auth();
+  // TODO: load singleton
   const fplService = new FplService(new FplApi());
+  const twilioApi = new TwilioApi();
 
   return {
     headers: opts.req.headers,
     userId,    
     db,
-    fplService
+    fplService,
+    twilioApi
   };
 };
 

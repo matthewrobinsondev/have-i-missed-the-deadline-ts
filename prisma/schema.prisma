@@ -22,9 +22,19 @@ model UserPreferences {
   @@map("user_preferences")
 }
 
+model UserContact {
+  id           Int      @id @default(autoincrement())
+  user_id      String   @unique @db.VarChar(255)
+  phone_number String
+  is_verified  Boolean
+ 
+  @@index([user_id])
+  @@map("user_contact")
+}
+
 model ReminderType {
   id                    Int               @id @default(autoincrement())
-  send_fixture_reminder Boolean           @default(false) // Add default values
+  send_fixture_reminder Boolean           @default(false)
   send_transfer_in      Boolean           @default(false)
   send_transfer_out     Boolean           @default(false)
   preferences           UserPreferences[]

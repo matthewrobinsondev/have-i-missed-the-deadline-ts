@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CardTitle,
   CardDescription,
@@ -8,8 +10,42 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { trpc } from "../trpc/client";
+import { useState } from "react";
+
 
 export default function RegisterPhone() {
+  
+const registerPhoneNumber = trpc.registerPhoneNumber.useMutation();
+const validatePhoneNumber = trpc.validatePhoneNumber.useMutation();
+const [phoneNumber, setPhoneNumber] = useState('');
+
+const handlePhoneNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setPhoneNumber(event.target.value);
+};
+
+const [inputCode, setInputCode] = useState('');
+
+const handleInputCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  setInputCode(event.target.value);
+};
+
+const handleRegisterPhoneNumber = () => {
+  registerPhoneNumber.mutateAsync(
+    {
+      phone_number: phoneNumber
+    }
+  );
+};
+
+const handleVerifyCode = () => {
+  validatePhoneNumber.mutateAsync(
+    {
+      input_code: inputCode
+    }
+  );
+};
+  
   return (
     <div>
       <Card className="mx-4 md:mx-auto max-w-sm bg-white bg-opacity-90 shadow-lg rounded-lg mt-10">
@@ -32,11 +68,14 @@ export default function RegisterPhone() {
               placeholder="+1 234 567 8900"
               required
               type="tel"
+              value={phoneNumber}
+              onChange={handlePhoneNumberChange}
             />
           </div>
           <Button
             className="w-full bg-slate-700 text-white hover:bg-slate-600"
             type="submit"
+            onClick={handleRegisterPhoneNumber}
           >
             Send Verification Code
           </Button>
@@ -63,11 +102,14 @@ export default function RegisterPhone() {
               placeholder="Enter code"
               required
               type="text"
+              value={inputCode}
+              onChange={handleInputCodeChange}
             />
           </div>
           <Button
             className="w-full bg-slate-700 text-white hover:bg-slate-600"
             type="submit"
+            onClick={handleVerifyCode}
           >
             Verify
           </Button>

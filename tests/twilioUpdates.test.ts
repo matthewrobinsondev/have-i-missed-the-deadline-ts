@@ -1,5 +1,5 @@
 import { test, expect, mock, beforeEach, jest } from "bun:test";
-import { appRouter } from "..";
+import { appRouter } from "../src/server";
 
 const mockDateNow = () => 1699617119;
 
