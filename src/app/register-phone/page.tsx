@@ -13,39 +13,42 @@ import { Button } from "@/components/ui/button";
 import { trpc } from "../trpc/client";
 import { useState } from "react";
 
-
 export default function RegisterPhone() {
-  
-const registerPhoneNumber = trpc.registerPhoneNumber.useMutation();
-const validatePhoneNumber = trpc.validatePhoneNumber.useMutation();
-const [phoneNumber, setPhoneNumber] = useState('');
+  const registerPhoneNumber = trpc.registerPhoneNumber.useMutation();
+  const validatePhoneNumber = trpc.validatePhoneNumber.useMutation();
+  const deletePhoneNumber = trpc.deletePhoneNumber.useMutation();
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-const handlePhoneNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  setPhoneNumber(event.target.value);
-};
+  const handlePhoneNumberChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setPhoneNumber(event.target.value);
+  };
 
-const [inputCode, setInputCode] = useState('');
+  const [inputCode, setInputCode] = useState("");
 
-const handleInputCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  setInputCode(event.target.value);
-};
+  const handleInputCodeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setInputCode(event.target.value);
+  };
 
-const handleRegisterPhoneNumber = () => {
-  registerPhoneNumber.mutateAsync(
-    {
-      phone_number: phoneNumber
-    }
-  );
-};
+  const handleRegisterPhoneNumber = () => {
+    registerPhoneNumber.mutateAsync({
+      phone_number: phoneNumber,
+    });
+  };
 
-const handleVerifyCode = () => {
-  validatePhoneNumber.mutateAsync(
-    {
-      input_code: inputCode
-    }
-  );
-};
-  
+  const handleVerifyCode = () => {
+    validatePhoneNumber.mutateAsync({
+      input_code: inputCode,
+    });
+  };
+
+  const handleDeletePhoneNumber = () => {
+    deletePhoneNumber.mutateAsync();
+  };
+
   return (
     <div>
       <Card className="mx-4 md:mx-auto max-w-sm bg-white bg-opacity-90 shadow-lg rounded-lg mt-10">
@@ -115,6 +118,16 @@ const handleVerifyCode = () => {
           </Button>
         </CardContent>
       </Card>
+
+      <div className="mx-4 md:mx-auto max-w-sm mt-10">
+        <Button 
+          className="w-full text-white"
+          variant="destructive"
+          onClick={handleDeletePhoneNumber}
+        >
+          Delete Phone Number
+        </Button>
+      </div>
     </div>
   );
 }
