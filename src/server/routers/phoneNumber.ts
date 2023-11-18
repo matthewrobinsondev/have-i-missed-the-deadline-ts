@@ -3,6 +3,8 @@ import { privateProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { log } from "next-axiom";
 
+// TODO Add Unit Testing
+
 export const PhoneNumberRouter = router({
   registerPhoneNumber: privateProcedure
     .input(
@@ -35,11 +37,11 @@ export const PhoneNumberRouter = router({
         where: { user_id: userId },
         create: {
           user_id: userId,
-          phone_number: input.phone_number, // encrypt
+          phone_number: input.phone_number, // TODO: encrypt
           is_verified: false,
         },
         update: {
-          phone_number: input.phone_number, // encrypt
+          phone_number: input.phone_number, // TODO: encrypt
           is_verified: false,
         },
       });
