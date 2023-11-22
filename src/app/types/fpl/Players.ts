@@ -7,4 +7,4 @@ export interface Player {
   transfers_out_event: number;
 }
 
-export type PlayerTransferKey = 'transfers_out_event' | 'transfers_in_event';
+export type PlayerTransferKey = "transfers_out_event" | "transfers_in_event";

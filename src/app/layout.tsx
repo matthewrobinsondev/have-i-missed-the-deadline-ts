@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const DynamicNavigationBar = dynamic(
   () => import("./components/NavigationBar"),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function RootLayout({

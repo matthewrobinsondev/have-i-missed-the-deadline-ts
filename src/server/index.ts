@@ -9,8 +9,8 @@ export const appRouter = router({
   updateOneDay: TwilioUpdateRouter.updateOneDay,
   getUserPhoneNumber: PhoneNumberRouter.getPhoneNumber,
   registerPhoneNumber: PhoneNumberRouter.registerPhoneNumber,
-  validatePhoneNumber:PhoneNumberRouter.validatePhoneNumber,
-  deletePhoneNumber: PhoneNumberRouter.deletePhoneNumber
+  validatePhoneNumber: PhoneNumberRouter.validatePhoneNumber,
+  deletePhoneNumber: PhoneNumberRouter.deletePhoneNumber,
 });
 
 export type AppRouter = typeof appRouter;

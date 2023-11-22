@@ -17,7 +17,7 @@ function NavigationBar() {
     } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
       setDarkMode(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

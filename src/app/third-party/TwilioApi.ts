@@ -14,7 +14,7 @@ class TwilioApi implements TwilioApiInterface {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${Buffer.from(
-            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`
+            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`,
           ).toString("base64")}`,
         },
         body: requestBody,
@@ -22,7 +22,7 @@ class TwilioApi implements TwilioApiInterface {
 
       if (!response.ok) {
         throw new Error(
-          `Twilio API request failed with status ${response.status}`
+          `Twilio API request failed with status ${response.status}`,
         );
       }
 
@@ -42,7 +42,7 @@ class TwilioApi implements TwilioApiInterface {
 
   public async verifyCode(
     phoneNumber: string,
-    inputCode: string
+    inputCode: string,
   ): Promise<any> {
     try {
       const requestBody = new URLSearchParams();
@@ -56,7 +56,7 @@ class TwilioApi implements TwilioApiInterface {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
           Authorization: `Basic ${Buffer.from(
-            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`
+            `${process.env.TWILIO_ACCOUNT_SID}:${process.env.TWILIO_AUTH_TOKEN}`,
           ).toString("base64")}`,
         },
         body: requestBody,
@@ -64,7 +64,7 @@ class TwilioApi implements TwilioApiInterface {
 
       if (!response.ok) {
         throw new Error(
-          `Twilio API request failed with status ${response.status}`
+          `Twilio API request failed with status ${response.status}`,
         );
       }
 

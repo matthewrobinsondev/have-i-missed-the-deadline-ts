@@ -6,7 +6,9 @@ import { httpBatchLink } from "@trpc/client";
 import { trpc } from "./client";
 import superjson from "superjson";
 
-export default function TrpcProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function TrpcProvider({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   const [queryClient] = useState(() => new QueryClient({}));
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -15,8 +17,8 @@ export default function TrpcProvider({ children }: Readonly<{ children: React.Re
           url: "http://localhost:3000/api/trpc",
         }),
       ],
-      transformer: superjson
-    })
+      transformer: superjson,
+    }),
   );
 
   return (

@@ -16,7 +16,7 @@ export default function Dashboard() {
     if (userPreferences.data) {
       const preferences: UserPreferencesInput = userPreferences.data;
       const initialCheckedValues = Object.keys(preferences).filter(
-        (key) => preferences[key as keyof UserPreferencesInput]
+        (key) => preferences[key as keyof UserPreferencesInput],
       );
       setCheckedValues(initialCheckedValues);
       setLoading(false);
@@ -32,24 +32,21 @@ export default function Dashboard() {
       }
     });
   };
-  
+
   const handleSubmit = () => {
-    updateUserPreferences.mutateAsync(
-      {
-        send_1_day_before: checkedValues.includes("send_1_day_before"),
-        send_3_hours_before: checkedValues.includes("send_3_hours_before"),
-        send_30_minutes_before: checkedValues.includes("send_30_minutes_before"),
-        send_fixture_reminder: checkedValues.includes("send_fixture_reminder"),
-        send_transfer_in: checkedValues.includes("send_transfer_in"),
-        send_transfer_out: checkedValues.includes("send_transfer_out"),
-      }
-    );
+    updateUserPreferences.mutateAsync({
+      send_1_day_before: checkedValues.includes("send_1_day_before"),
+      send_3_hours_before: checkedValues.includes("send_3_hours_before"),
+      send_30_minutes_before: checkedValues.includes("send_30_minutes_before"),
+      send_fixture_reminder: checkedValues.includes("send_fixture_reminder"),
+      send_transfer_in: checkedValues.includes("send_transfer_in"),
+      send_transfer_out: checkedValues.includes("send_transfer_out"),
+    });
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
 
   return (
     <div className="flex flex-col items-center justify-between px-4 md:px-6">
@@ -61,17 +58,23 @@ export default function Dashboard() {
 
           <Checkbox
             label="1 Day Before"
-            onChange={(checked) => handleCheckboxChange("send_1_day_before", checked,)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_1_day_before", checked)
+            }
             defaultValue={userPreferences.data?.send_1_day_before}
           />
           <Checkbox
             label="3 Hours Before"
-            onChange={(checked) => handleCheckboxChange("send_3_hours_before", checked)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_3_hours_before", checked)
+            }
             defaultValue={userPreferences.data?.send_3_hours_before}
           />
           <Checkbox
             label="30 Minutes Before"
-            onChange={(checked) => handleCheckboxChange("send_30_minutes_before", checked)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_30_minutes_before", checked)
+            }
             defaultValue={userPreferences.data?.send_30_minutes_before}
           />
         </div>
@@ -80,17 +83,23 @@ export default function Dashboard() {
 
           <Checkbox
             label="Fixture Reminder"
-            onChange={(checked) => handleCheckboxChange("send_fixture_reminder", checked)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_fixture_reminder", checked)
+            }
             defaultValue={userPreferences.data?.send_fixture_reminder}
           />
           <Checkbox
             label="Trending Transfers In"
-            onChange={(checked) => handleCheckboxChange("send_transfer_in", checked)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_transfer_in", checked)
+            }
             defaultValue={userPreferences.data?.send_transfer_in}
           />
           <Checkbox
             label="Trending Transfers Out"
-            onChange={(checked) => handleCheckboxChange("send_transfer_out", checked)}
+            onChange={(checked) =>
+              handleCheckboxChange("send_transfer_out", checked)
+            }
             defaultValue={userPreferences.data?.send_transfer_out}
           />
         </div>

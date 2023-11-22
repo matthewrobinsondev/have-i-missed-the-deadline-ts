@@ -16,10 +16,10 @@ export const Context = (opts: { req: NextRequest }) => {
 
   return {
     headers: opts.req.headers,
-    userId,    
+    userId,
     db,
     fplService,
-    twilioApi
+    twilioApi,
   };
 };
 

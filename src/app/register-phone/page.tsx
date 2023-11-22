@@ -20,7 +20,7 @@ export default function RegisterPhone() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   const handlePhoneNumberChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPhoneNumber(event.target.value);
   };
@@ -28,7 +28,7 @@ export default function RegisterPhone() {
   const [inputCode, setInputCode] = useState("");
 
   const handleInputCodeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setInputCode(event.target.value);
   };
@@ -120,7 +120,7 @@ export default function RegisterPhone() {
       </Card>
 
       <div className="mx-4 md:mx-auto max-w-sm mt-10">
-        <Button 
+        <Button
           className="w-full text-white"
           variant="destructive"
           onClick={handleDeletePhoneNumber}

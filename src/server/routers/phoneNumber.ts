@@ -10,7 +10,7 @@ export const PhoneNumberRouter = router({
     .input(
       z.object({
         phone_number: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
@@ -52,7 +52,7 @@ export const PhoneNumberRouter = router({
     .input(
       z.object({
         input_code: z.string(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId;
@@ -77,7 +77,7 @@ export const PhoneNumberRouter = router({
 
       const response = await ctx.twilioApi.verifyCode(
         userContact.phone_number,
-        input.input_code
+        input.input_code,
       );
 
       if (!response) {
@@ -133,7 +133,7 @@ export const PhoneNumberRouter = router({
     }
 
     const hiddenNumber = userContact.phone_number.substring(
-      userContact.phone_number.length - 4
+      userContact.phone_number.length - 4,
     );
 
     return {

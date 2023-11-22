@@ -1,3 +1,3 @@
 interface FplApiInterface {
-    getGeneralInformation(): Promise<any>;
+  getGeneralInformation(): Promise<any>;
 }

@@ -51,7 +51,7 @@ function isUpdateTimeValid(deadline: number, oneDayTime: number) {
 function getSmsBody(
   user: any,
   topTransferredIn: any,
-  topTransferredOut: any
+  topTransferredOut: any,
 ): string {
   const smsBody = `Hello ${user.user_id}! Here are your FPL updates for today: ${topTransferredIn} ${topTransferredOut}`;
   return smsBody;

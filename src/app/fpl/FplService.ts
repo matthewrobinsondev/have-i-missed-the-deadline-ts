@@ -14,10 +14,10 @@ export class FplService {
       const generalInformation = await this.fplApi.getGeneralInformation();
 
       const currentGameweek = generalInformation.events.find(
-        (event: Event) => event.is_current
+        (event: Event) => event.is_current,
       );
       const nextGameweek = generalInformation.events.find(
-        (event: Event) => event.is_next
+        (event: Event) => event.is_next,
       );
 
       return this.calculateDeadline(currentGameweek, nextGameweek);
@@ -42,26 +42,26 @@ export class FplService {
     try {
       const generalInformation = await this.fplApi.getGeneralInformation();
       const players = generalInformation.elements;
-  
+
       players.sort((a: Player, b: Player) => b[event] - a[event]);
-  
+
       const topTransferredEvents = players
         .slice(0, 10)
         .map((player: Player) => player[event]);
-  
+
       return players.filter((player: Player) =>
-        topTransferredEvents.includes(player[event])
+        topTransferredEvents.includes(player[event]),
       );
     } catch (error) {
       if (error instanceof Error) {
         log.error(error.message);
       }
-    }    
+    }
   }
 
   private calculateDeadline(
     currentGameweek: Event,
-    nextGameweek: Event
+    nextGameweek: Event,
   ): number {
     return currentGameweek.finished
       ? Date.parse(nextGameweek.deadline_time)
