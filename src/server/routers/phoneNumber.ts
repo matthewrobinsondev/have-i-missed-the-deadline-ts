@@ -144,7 +144,10 @@ export const PhoneNumberRouter = router({
 
 function isValidUKPhoneNumber(phoneNumber: string): boolean {
   const ukPhoneNumberRegex =
-    /^(?:(?:\+44)|(?:0))(?:(?!0)[0-9]{10}|(?:(?:(?:2\d|[3-9])[0-9]|[1-9])(?:(?!\d{2,4}|(11(?![0-9]))(22(?![0-9]))(33(?![0-9]))(44(?![0-9]))(55(?![0-9]))(66(?![0-9]))(77(?![0-9]))(88(?![0-9]))(99(?![0-9])))\d{6}))$/;
+    /^(?:(?:\+44)|(?:0))(?:(?:(?:20[78])|(?:77[1-9])|(?:78[0-9])|(?:79[0-9])|(?:74[4-9]))[0-9]{8}|(?:7505[0-9]{6})|(?:7624[0-9]{6})|(?:762[0-9]{7})|(?:76[3-5][0-9]{6})|(?:76[6-9][0-9]{6})|(?:70[03][0-9]{6})|(?:75[0-9]{7})|(?:77[0-9]{7})|(?:78[0-9]{7})|(?:79[0-9]{7})|(?:74[4-9]9[0-9]{5})|(?:74[4-9][0-9]{6}))$/;
 
-  return ukPhoneNumberRegex.test(phoneNumber);
+  // Temporary variable to suppress TypeScript error
+  const testResult = ukPhoneNumberRegex.test(phoneNumber);
+
+  return testResult;
 }
