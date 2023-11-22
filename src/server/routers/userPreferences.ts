@@ -58,19 +58,21 @@ export const UserPreferencesRouter = router({
       });
     }
 
-    getUserPreferences.reminder_type = await ctx.db.reminderType.findUnique({
+    const reminderType = await ctx.db.reminderType.findUnique({
       where: { id: getUserPreferences.reminder_type_id },
     });
 
-    getUserPreferences.reminder_schedule =
-      await ctx.db.reminderSchedule.findUnique({
-        where: { id: getUserPreferences.reminder_schedule_id },
-      });
+    const reminderSchedule = await ctx.db.reminderSchedule.findUnique({
+      where: { id: getUserPreferences.reminder_schedule_id },
+    });
+
+    if (!reminderType || !reminderSchedule) {
+      throw new Error("Invalid Response from DB");
+    }
 
     return {
-      ...getUserPreferences.id,
-      ...getUserPreferences.reminder_type,
-      ...getUserPreferences.reminder_schedule,
+      ...reminderType,
+      ...reminderSchedule,
     };
   }),
 });

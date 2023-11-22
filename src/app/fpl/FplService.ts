@@ -21,6 +21,10 @@ export class FplService {
         (event: Event) => event.is_next,
       );
 
+      if (!currentGameweek || !nextGameweek) {
+        throw new Error("Invalid Response from Api.");
+      }
+
       return this.calculateDeadline(currentGameweek, nextGameweek);
     } catch (error) {
       if (error instanceof Error) {

@@ -52,58 +52,48 @@ export default function Dashboard() {
     <div className="flex flex-col items-center justify-between px-4 md:px-6">
       <h1 className="text-4xl font-bold mb-2">Welcome</h1>
       <p className="text-lg mb-8">Please select your reminder options.</p>
-      <div className="grid md:grid-cols-2 gap-8 xl:gap-10">
-        <div className="space-y-8 xl:space-y-10">
-          <label className="text-xl font-bold">Schedule:</label>
+      {userPreferences.data ? (
+        <div className="grid md:grid-cols-2 gap-8 xl:gap-10">
+          <div className="space-y-8 xl:space-y-10">
+            <label className="text-xl font-bold">Schedule:</label>
 
-          <Checkbox
-            label="1 Day Before"
-            onChange={(checked) =>
-              handleCheckboxChange("send_1_day_before", checked)
-            }
-            defaultValue={userPreferences.data?.send_1_day_before}
-          />
-          <Checkbox
-            label="3 Hours Before"
-            onChange={(checked) =>
-              handleCheckboxChange("send_3_hours_before", checked)
-            }
-            defaultValue={userPreferences.data?.send_3_hours_before}
-          />
-          <Checkbox
-            label="30 Minutes Before"
-            onChange={(checked) =>
-              handleCheckboxChange("send_30_minutes_before", checked)
-            }
-            defaultValue={userPreferences.data?.send_30_minutes_before}
-          />
-        </div>
-        <div className="space-y-8 xl:space-y-10">
-          <label className="text-xl font-bold">Type:</label>
+            <Checkbox
+              label="1 Day Before"
+              onChange={() => handleCheckboxChange("send_1_day_before")}
+              defaultValue={userPreferences.data?.send_1_day_before}
+            />
+            <Checkbox
+              label="3 Hours Before"
+              onChange={() => handleCheckboxChange("send_3_hours_before")}
+              defaultValue={userPreferences.data?.send_3_hours_before}
+            />
+            <Checkbox
+              label="30 Minutes Before"
+              onChange={() => handleCheckboxChange("send_30_minutes_before")}
+              defaultValue={userPreferences.data?.send_30_minutes_before}
+            />
+          </div>
+          <div className="space-y-8 xl:space-y-10">
+            <label className="text-xl font-bold">Type:</label>
 
-          <Checkbox
-            label="Fixture Reminder"
-            onChange={(checked) =>
-              handleCheckboxChange("send_fixture_reminder", checked)
-            }
-            defaultValue={userPreferences.data?.send_fixture_reminder}
-          />
-          <Checkbox
-            label="Trending Transfers In"
-            onChange={(checked) =>
-              handleCheckboxChange("send_transfer_in", checked)
-            }
-            defaultValue={userPreferences.data?.send_transfer_in}
-          />
-          <Checkbox
-            label="Trending Transfers Out"
-            onChange={(checked) =>
-              handleCheckboxChange("send_transfer_out", checked)
-            }
-            defaultValue={userPreferences.data?.send_transfer_out}
-          />
+            <Checkbox
+              label="Fixture Reminder"
+              onChange={() => handleCheckboxChange("send_fixture_reminder")}
+              defaultValue={userPreferences.data?.send_fixture_reminder}
+            />
+            <Checkbox
+              label="Trending Transfers In"
+              onChange={() => handleCheckboxChange("send_transfer_in")}
+              defaultValue={userPreferences.data?.send_transfer_in}
+            />
+            <Checkbox
+              label="Trending Transfers Out"
+              onChange={() => handleCheckboxChange("send_transfer_out")}
+              defaultValue={userPreferences.data?.send_transfer_out}
+            />
+          </div>
         </div>
-      </div>
+      ) : null}
       <div className="mt-6">
         <button
           className="bg-[#BD1E59] text-white px-4 py-2 rounded-md shadow-lg hover:bg-[#9D1B51]"
