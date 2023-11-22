@@ -12,6 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
+      - name: Install
+        run: bun install
       - name: Lint
         run: bun lint
       - name: Test
