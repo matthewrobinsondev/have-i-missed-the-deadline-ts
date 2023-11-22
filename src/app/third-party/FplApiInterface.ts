@@ -1,3 +1,5 @@
-interface FplApiInterface {
-  getGeneralInformation(): Promise<any>;
+import { GeneralInformation } from "../types/fpl/GeneralInformation";
+
+export interface FplApiInterface {
+  getGeneralInformation(): Promise<GeneralInformation>;
 }

@@ -1,12 +1,15 @@
 import { TRPCError } from "@trpc/server";
 import { publicProcedure, router } from "../trpc";
+import { UserPreferences } from "@prisma/client";
+import { Player } from "@/app/types/fpl/Players";
+import { log } from "next-axiom";
 
 export const TwilioUpdateRouter = router({
   updateOneDay: publicProcedure.mutation(async ({ ctx }) => {
     const oneDayTime = 86400000;
     const deadline = await ctx.fplService.getDeadline();
-    // const topTransferredIn = await ctx.fplService.getTopTransferredIn();
-    // const topTransferredOut = await ctx.fplService.getTopTransferredOut();
+    const topTransferredIn = await ctx.fplService.getTopTransferredIn();
+    const topTransferredOut = await ctx.fplService.getTopTransferredOut();
 
     const valid = isUpdateTimeValid(deadline, oneDayTime);
 
@@ -32,11 +35,12 @@ export const TwilioUpdateRouter = router({
       });
     }
 
-    // for (const user of users) {
-    //   const smsBody = getSmsBody(user, topTransferredIn, topTransferredOut);
-    // }
+    for (const user of users) {
+      const smsBody = getSmsBody(user, topTransferredIn, topTransferredOut);
+      log.debug(smsBody);
+    }
 
-    return "SMS updates have been sent.";
+    return `SMS updates have been sent.`;
   }),
 });
 
@@ -49,10 +53,11 @@ function isUpdateTimeValid(deadline: number, oneDayTime: number) {
 }
 
 function getSmsBody(
-  user: any,
-  topTransferredIn: any,
-  topTransferredOut: any,
+  user: UserPreferences,
+  topTransferredIn: Player[],
+  topTransferredOut: Player[],
 ): string {
   const smsBody = `Hello ${user.user_id}! Here are your FPL updates for today: ${topTransferredIn} ${topTransferredOut}`;
+
   return smsBody;
 }

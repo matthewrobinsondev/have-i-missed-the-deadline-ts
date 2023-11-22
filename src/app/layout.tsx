@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { AxiomWebVitals } from "next-axiom";
-import NavigationBar from "./components/NavigationBar";
 import dynamic from "next/dynamic";
 import TrpcProvider from "./trpc/provider";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Have I missed the deadline?",
@@ -21,9 +17,9 @@ const DynamicNavigationBar = dynamic(
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   // bree / bison
   return (
     <ClerkProvider>

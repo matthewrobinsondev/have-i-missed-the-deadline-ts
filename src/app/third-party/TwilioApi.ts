@@ -1,7 +1,8 @@
 import { log } from "next-axiom";
+import { TwilioApiInterface } from "./TwilioApiInterface";
 
 class TwilioApi implements TwilioApiInterface {
-  public async sendVerificationCode(phoneNumber: string): Promise<any> {
+  public async sendVerificationCode(phoneNumber: string): Promise<boolean> {
     try {
       const requestBody = new URLSearchParams();
       requestBody.append("To", phoneNumber);
@@ -43,7 +44,7 @@ class TwilioApi implements TwilioApiInterface {
   public async verifyCode(
     phoneNumber: string,
     inputCode: string,
-  ): Promise<any> {
+  ): Promise<boolean> {
     try {
       const requestBody = new URLSearchParams();
       requestBody.append("To", phoneNumber);
@@ -86,19 +87,25 @@ class TwilioApi implements TwilioApiInterface {
     }
   }
 
-  public async sendSmsUpdate(): Promise<any> {
+  public async sendSmsUpdate(): Promise<boolean> {
     try {
       const response = await fetch(`${process.env.APPLICATION_URL}/fpl`, {
         next: { revalidate: 300 },
       });
 
-      return response.json();
+      const responseData = await response.json();
+
+      log.info(responseData);
+
+      return true;
     } catch (error) {
       if (error instanceof Error) {
         log.error(error.message);
       }
       throw new Error("Failed to fetch data from the FPL API.");
     }
+
+    return false;
   }
 }
 

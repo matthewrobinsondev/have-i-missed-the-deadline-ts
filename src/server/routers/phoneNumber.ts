@@ -3,7 +3,7 @@ import { privateProcedure, router } from "../trpc";
 import { TRPCError } from "@trpc/server";
 import { log } from "next-axiom";
 
-// TODO Add Unit Testing
+// TODO: Add Unit Testing
 
 export const PhoneNumberRouter = router({
   registerPhoneNumber: privateProcedure
@@ -143,9 +143,8 @@ export const PhoneNumberRouter = router({
 });
 
 function isValidUKPhoneNumber(phoneNumber: string): boolean {
-  //   const ukPhoneNumberRegex =
-  //     /^(?:(?:\+44)|(?:0))(?:(?!0)[0-9]{10}|(?:(?:(?:2\d|[3-9])[0-9]|[1-9])(?:(?!\d{2,4}|(11(?![0-9]))(22(?![0-9]))(33(?![0-9]))(44(?![0-9]))(55(?![0-9]))(66(?![0-9]))(77(?![0-9]))(88(?![0-9]))(99(?![0-9])))\d{6}))$/;
+  const ukPhoneNumberRegex =
+    /^(?:(?:\+44)|(?:0))(?:(?!0)[0-9]{10}|(?:(?:(?:2\d|[3-9])[0-9]|[1-9])(?:(?!\d{2,4}|(11(?![0-9]))(22(?![0-9]))(33(?![0-9]))(44(?![0-9]))(55(?![0-9]))(66(?![0-9]))(77(?![0-9]))(88(?![0-9]))(99(?![0-9])))\d{6}))$/;
 
-  //   return ukPhoneNumberRegex.test(phoneNumber);
-  return true;
+  return ukPhoneNumberRegex.test(phoneNumber);
 }

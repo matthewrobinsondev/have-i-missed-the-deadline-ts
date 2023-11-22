@@ -1,6 +1,7 @@
 import { log } from "next-axiom";
 import { Event } from "../types/fpl/Events";
 import { Player, PlayerTransferKey } from "../types/fpl/Players";
+import { FplApiInterface } from "../third-party/FplApiInterface";
 
 export class FplService {
   private fplApi: FplApiInterface;
@@ -38,7 +39,9 @@ export class FplService {
     return this.getTopTransferredPlayers("transfers_out_event");
   }
 
-  private async getTopTransferredPlayers(event: PlayerTransferKey) {
+  private async getTopTransferredPlayers(
+    event: PlayerTransferKey,
+  ): Promise<Player[]> {
     try {
       const generalInformation = await this.fplApi.getGeneralInformation();
       const players = generalInformation.elements;
@@ -57,6 +60,8 @@ export class FplService {
         log.error(error.message);
       }
     }
+
+    return [];
   }
 
   private calculateDeadline(
