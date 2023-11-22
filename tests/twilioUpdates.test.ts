@@ -37,16 +37,22 @@ const mockDb = {
 };
 const fplApiMock = mock(() => ({
   getDeadline: () => Promise.resolve(1699703519),
+  topTransferredIn: () => Promise.resolve(),
+  topTransferredOut: () => Promise.resolve(),
 }));
 
 const fplServiceMock = {
   getDeadline: fplApiMock().getDeadline,
+  getTopTransferredIn: fplApiMock().topTransferredIn,
+  getTopTransferredOut: fplApiMock().topTransferredOut,
 };
 
+
+// TODO: Complete Test
 test("updateOneDay - valid time", async () => {
   const ctx = { db: mockDb, fplService: fplServiceMock };
   const caller = appRouter.createCaller(ctx);
   const result = await caller.updateOneDay();
 
-  expect(result).toBeUndefined();
+  expect(result).toBe('SMS updates have been sent.');
 });
