@@ -71,7 +71,7 @@ async function sendSmsUpdates(
         .slice(0, 5),
       topTransferredOut
         .toSorted((a, b) => b.transfers_out_event - a.transfers_out_event)
-        .slice(0, 5)
+        .slice(0, 5),
     );
 
     const userContact = await ctx.db.userContact.findUnique({
@@ -90,7 +90,7 @@ async function sendSmsUpdates(
 function getSmsBody(
   user: UserPreferences,
   topTransferredIn: Player[],
-  topTransferredOut: Player[]
+  topTransferredOut: Player[],
 ): string {
   const smsBody = `🔥 Here are your FPL updates 🔥
   📈 Top Transferred In: 
@@ -99,7 +99,7 @@ function getSmsBody(
       (player, index) =>
         `${index + 1}. ${player.first_name} - ${
           player.second_name
-        }\n   Transfers In: ${player.transfers_in_event}`
+        }\n   Transfers In: ${player.transfers_in_event}`,
     )
     .join("\n")}
 
@@ -109,7 +109,7 @@ function getSmsBody(
        (player, index) =>
          `${index + 1}. ${player.first_name} - ${
            player.second_name
-         }\n   Transfers Out: ${player.transfers_out_event}`
+         }\n   Transfers Out: ${player.transfers_out_event}`,
      )
      .join("\n")}`;
 
