@@ -1,5 +1,6 @@
 import { log } from "next-axiom";
 import { TwilioApiInterface } from "./TwilioApiInterface";
+import { Twilio } from "twilio";
 
 class TwilioApi implements TwilioApiInterface {
   public async sendVerificationCode(phoneNumber: string): Promise<boolean> {
@@ -87,15 +88,23 @@ class TwilioApi implements TwilioApiInterface {
     }
   }
 
-  public async sendSmsUpdate(): Promise<boolean> {
+  public async sendSmsUpdate(
+    phoneNumber: string,
+    message: string,
+  ): Promise<boolean> {
     try {
-      const response = await fetch(`${process.env.APPLICATION_URL}/fpl`, {
-        next: { revalidate: 300 },
-      });
+      const client = new Twilio(
+        process.env.TWILIO_ACCOUNT_SID,
+        process.env.TWILIO_AUTH_TOKEN,
+      );
 
-      const responseData = await response.json();
-
-      log.info(responseData);
+      client.messages
+        .create({
+          from: process.env.TWILIO_PHONE_NUMBER,
+          to: phoneNumber,
+          body: message,
+        })
+        .then((message) => console.log(message.sid));
 
       return true;
     } catch (error) {

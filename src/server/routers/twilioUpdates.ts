@@ -35,18 +35,39 @@ export const TwilioUpdateRouter = router({
       });
     }
 
+    log.info("Running cron for one day before updates.");
+
     for (const user of users) {
-      const smsBody = getSmsBody(user, topTransferredIn, topTransferredOut);
-      log.debug(smsBody);
+      const smsBody = getSmsBody(
+        user,
+        topTransferredIn
+          .toSorted((a, b) => b.transfers_in_event - a.transfers_in_event)
+          .slice(0, 5),
+        topTransferredOut
+          .toSorted((a, b) => b.transfers_out_event - a.transfers_out_event)
+          .slice(0, 5),
+      );
+
+      const userContact = await ctx.db.userContact.findUnique({
+        where: { user_id: user.user_id },
+      });
+
+      if (!userContact?.is_verified) {
+        log.info(`${user.user_id} does not have a verified phone number.`);
+        continue;
+      }
+
+      console.log(smsBody);
+
+      ctx.twilioApi.sendSmsUpdate(userContact.phone_number, smsBody);
     }
 
-    return `SMS updates have been sent.`;
+    return `SMS updates sent.`;
   }),
 });
 
 function isUpdateTimeValid(deadline: number, oneDayTime: number) {
   const currentTime = Date.now();
-  console.log(currentTime);
   const timeDifference = currentTime - deadline;
   const valid = timeDifference < oneDayTime;
   return valid;
@@ -57,7 +78,26 @@ function getSmsBody(
   topTransferredIn: Player[],
   topTransferredOut: Player[],
 ): string {
-  const smsBody = `Hello ${user.user_id}! Here are your FPL updates for today: ${topTransferredIn} ${topTransferredOut}`;
+  const smsBody = `🔥 Here are your FPL updates 🔥
+  📈 Top Transferred In: 
+  ${topTransferredIn
+    .map(
+      (player, index) =>
+        `${index + 1}. ${player.first_name} - ${
+          player.second_name
+        }\n   Transfers In: ${player.transfers_in_event}`,
+    )
+    .join("\n")}
+
+  📉 Top Transferred Out:
+   ${topTransferredOut
+     .map(
+       (player, index) =>
+         `${index + 1}. ${player.first_name} - ${
+           player.second_name
+         }\n   Transfers Out: ${player.transfers_out_event}`,
+     )
+     .join("\n")}`;
 
   return smsBody;
 }

@@ -207,4 +207,218 @@ export class TestHelper {
 
     return hardcodedPlayers;
   }
+
+  static getTransferredIn() {
+    const transferredInPlayers: Player[] = [
+      {
+        id: 101,
+        first_name: "Player1",
+        second_name: "LastName1",
+        team: 201,
+        transfers_in_event: 301,
+        transfers_out_event: 4101,
+      },
+      {
+        id: 102,
+        first_name: "Player2",
+        second_name: "LastName2",
+        team: 202,
+        transfers_in_event: 3402,
+        transfers_out_event: 402,
+      },
+      {
+        id: 103,
+        first_name: "Player3",
+        second_name: "LastName3",
+        team: 203,
+        transfers_in_event: 3035,
+        transfers_out_event: 4403,
+      },
+      {
+        id: 104,
+        first_name: "Player4",
+        second_name: "LastName4",
+        team: 204,
+        transfers_in_event: 1304,
+        transfers_out_event: 404,
+      },
+      {
+        id: 105,
+        first_name: "Player5",
+        second_name: "LastName5",
+        team: 205,
+        transfers_in_event: 6305,
+        transfers_out_event: 405,
+      },
+      {
+        id: 106,
+        first_name: "Player6",
+        second_name: "LastName6",
+        team: 206,
+        transfers_in_event: 8306,
+        transfers_out_event: 7406,
+      },
+      {
+        id: 107,
+        first_name: "Player7",
+        second_name: "LastName7",
+        team: 207,
+        transfers_in_event: 7307,
+        transfers_out_event: 8407,
+      },
+      {
+        id: 108,
+        first_name: "Player8",
+        second_name: "LastName8",
+        team: 208,
+        transfers_in_event: 5308,
+        transfers_out_event: 4085,
+      },
+      {
+        id: 109,
+        first_name: "Player9",
+        second_name: "LastName9",
+        team: 209,
+        transfers_in_event: 3029,
+        transfers_out_event: 4309,
+      },
+      {
+        id: 110,
+        first_name: "Player10",
+        second_name: "LastName10",
+        team: 210,
+        transfers_in_event: 310,
+        transfers_out_event: 1410,
+      },
+    ].sort((a, b) => b.transfers_in_event - a.transfers_in_event);
+
+    return transferredInPlayers;
+  }
+
+  static getTransferredOut() {
+    const transferredOutPlayers: Player[] = [
+      {
+        id: 111,
+        first_name: "Player11",
+        second_name: "LastName11",
+        team: 211,
+        transfers_in_event: 78811,
+        transfers_out_event: 11411,
+      },
+      {
+        id: 112,
+        first_name: "Player12",
+        second_name: "LastName12",
+        team: 212,
+        transfers_in_event: 1312,
+        transfers_out_event: 1412,
+      },
+      {
+        id: 113,
+        first_name: "Player13",
+        second_name: "LastName13",
+        team: 213,
+        transfers_in_event: 313,
+        transfers_out_event: 413,
+      },
+      {
+        id: 114,
+        first_name: "Player14",
+        second_name: "LastName14",
+        team: 214,
+        transfers_in_event: 314,
+        transfers_out_event: 414,
+      },
+      {
+        id: 115,
+        first_name: "Player15",
+        second_name: "LastName15",
+        team: 215,
+        transfers_in_event: 33515,
+        transfers_out_event: 415,
+      },
+      {
+        id: 116,
+        first_name: "Player16",
+        second_name: "LastName16",
+        team: 216,
+        transfers_in_event: 3156,
+        transfers_out_event: 416,
+      },
+      {
+        id: 117,
+        first_name: "Player17",
+        second_name: "LastName17",
+        team: 217,
+        transfers_in_event: 3157,
+        transfers_out_event: 4317,
+      },
+      {
+        id: 118,
+        first_name: "Player18",
+        second_name: "LastName18",
+        team: 218,
+        transfers_in_event: 3128,
+        transfers_out_event: 418,
+      },
+      {
+        id: 119,
+        first_name: "Player19",
+        second_name: "LastName19",
+        team: 219,
+        transfers_in_event: 6319,
+        transfers_out_event: 419,
+      },
+      {
+        id: 120,
+        first_name: "Player20",
+        second_name: "LastName20",
+        team: 220,
+        transfers_in_event: 9320,
+        transfers_out_event: 4290,
+      },
+      {
+        id: 121,
+        first_name: "Player21",
+        second_name: "LastName21",
+        team: 221,
+        transfers_in_event: 3921,
+        transfers_out_event: 4921,
+      },
+      {
+        id: 122,
+        first_name: "Player22",
+        second_name: "LastName22",
+        team: 222,
+        transfers_in_event: 6322,
+        transfers_out_event: 7422,
+      },
+      {
+        id: 123,
+        first_name: "Player23",
+        second_name: "LastName23",
+        team: 223,
+        transfers_in_event: 8323,
+        transfers_out_event: 6423,
+      },
+      {
+        id: 124,
+        first_name: "Player24",
+        second_name: "LastName24",
+        team: 224,
+        transfers_in_event: 3324,
+        transfers_out_event: 1424,
+      },
+      {
+        id: 125,
+        first_name: "Player25",
+        second_name: "LastName25",
+        team: 225,
+        transfers_in_event: 1325,
+        transfers_out_event: 2425,
+      },
+    ].sort((a, b) => b.transfers_out_event - a.transfers_out_event);
+
+    return transferredOutPlayers;
+  }
 }

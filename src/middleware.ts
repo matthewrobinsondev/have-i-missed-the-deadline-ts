@@ -1,7 +1,7 @@
 import { authMiddleware } from "@clerk/nextjs";
 
 export default authMiddleware({
-  publicRoutes: ["/", "/fpl"],
+  publicRoutes: ["/", "/fpl", "/api/trpc/updateOneDay"],
 });
 
 export const config = {
