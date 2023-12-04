@@ -13,6 +13,7 @@ export const TwilioUpdateRouter = router({
   updateOneDay: publicProcedure.mutation(async ({ ctx }) => {
     const oneDayTime = 86400;
     const deadline = await ctx.fplService.getDeadline();
+    const nextDeadline = await ctx.fplService.getNextDeadline();
     const valid = isUpdateTimeValid(deadline, oneDayTime);
 
     if (!valid) {
@@ -41,11 +42,14 @@ export const TwilioUpdateRouter = router({
 
     await sendSmsUpdates(users, ctx, "One Day");
 
+    await setCronForNextDeadline(nextDeadline - Date.now(), "updateOneDay");
+
     return `SMS updates sent.`;
   }),
   updateThreeHours: publicProcedure.mutation(async ({ ctx }) => {
     const threeHoursTime = 18000;
     const deadline = await ctx.fplService.getDeadline();
+    const nextDeadline = await ctx.fplService.getNextDeadline();
     const valid = isUpdateTimeValid(deadline, threeHoursTime);
 
     if (!valid) {
@@ -74,11 +78,14 @@ export const TwilioUpdateRouter = router({
 
     await sendSmsUpdates(users, ctx, "Three Hours");
 
+    await setCronForNextDeadline(nextDeadline - Date.now(), "updateThreeHours");
+
     return `SMS updates sent.`;
   }),
   updateThirtyMinutes: publicProcedure.mutation(async ({ ctx }) => {
     const thirtyMinutesTime = 1800;
     const deadline = await ctx.fplService.getDeadline();
+    const nextDeadline = await ctx.fplService.getNextDeadline();
     const valid = isUpdateTimeValid(deadline, thirtyMinutesTime);
 
     if (!valid) {
@@ -106,6 +113,11 @@ export const TwilioUpdateRouter = router({
     log.info("Running cron for thirty minutes before updates.");
 
     await sendSmsUpdates(users, ctx, "30 Minutes");
+
+    await setCronForNextDeadline(
+      nextDeadline - Date.now(),
+      "updateThirtyMinutes",
+    );
 
     return `SMS updates sent.`;
   }),
@@ -168,11 +180,11 @@ async function getSmsBody(
     where: { id: user.reminder_type_id },
   });
 
-  let transferInText = null;
-  let transferOutText = null;
-  let fplUpdateHeader = null;
+  let transferInText = '';
+  let transferOutText = '';
+  let fplUpdateHeader = '';
 
-  if (reminderType?.send_transfer_in && reminderType.send_transfer_out) {
+  if (reminderType?.send_transfer_in || reminderType?.send_transfer_out) {
     fplUpdateHeader = "🔥 Here are your FPL updates 🔥";
   }
   if (reminderType?.send_transfer_in) {
@@ -206,4 +218,27 @@ async function getSmsBody(
   ${transferOutText}`;
 
   return smsBody;
+}
+
+async function setCronForNextDeadline(delay: number, endpoint: string) {
+  console.log(delay / 1000);
+  const url = `${process.env.QSTASH_BASE_URL}${endpoint}`;
+  const authorizationToken = `Bearer ${process.env.QSTASH_AUTH_TOKEN}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Authorization': authorizationToken,
+        'Upstash-Delay': `${delay / 1000}s`,
+      },
+    });
+
+    if (!response.ok) {
+      log.error(`Update request failed with status: ${response.status}`);
+      log.error(`Response body: ${await response.text()}`);
+    }
+  } catch (error) {
+    log.error("Error sending update request:", error.message);
+  }
 }

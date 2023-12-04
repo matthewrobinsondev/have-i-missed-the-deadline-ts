@@ -35,6 +35,28 @@ export class FplService {
     }
   }
 
+  async getNextDeadline() {
+    try {
+      const generalInformation = await this.fplApi.getGeneralInformation();
+
+      const nextGameweek = generalInformation.events.find(
+        (event: Event) => event.is_next,
+      );
+
+      if (!nextGameweek) {
+        throw new Error("Invalid Response from Api.");
+      }
+
+      return Date.parse(nextGameweek.deadline_time);
+    } catch (error) {
+      if (error instanceof Error) {
+        log.error(error.message);
+      }
+
+      return 0;
+    }
+  }
+
   async getTopTransferredIn() {
     return this.getTopTransferredPlayers("transfers_in_event");
   }
