@@ -39,7 +39,7 @@ export const TwilioUpdateRouter = router({
 
     log.info("Running cron for one day before updates.");
 
-    await sendSmsUpdates(users, ctx);
+    await sendSmsUpdates(users, ctx, "One Day");
 
     return `SMS updates sent.`;
   }),
@@ -72,7 +72,7 @@ export const TwilioUpdateRouter = router({
 
     log.info("Running cron for three hours before updates.");
 
-    await sendSmsUpdates(users, ctx);
+    await sendSmsUpdates(users, ctx, "Three Hours");
 
     return `SMS updates sent.`;
   }),
@@ -105,7 +105,7 @@ export const TwilioUpdateRouter = router({
 
     log.info("Running cron for thirty minutes before updates.");
 
-    await sendSmsUpdates(users, ctx);
+    await sendSmsUpdates(users, ctx, "30 Minutes");
 
     return `SMS updates sent.`;
   }),
@@ -126,12 +126,13 @@ async function sendSmsUpdates(
     fplService: FplService;
     twilioApi: TwilioApi;
   },
+  updateTime: string,
 ) {
   const topTransferredIn = await ctx.fplService.getTopTransferredIn();
   const topTransferredOut = await ctx.fplService.getTopTransferredOut();
 
   for (const user of users) {
-    const smsBody = getSmsBody(
+    const smsBody = await getSmsBody(
       user,
       topTransferredIn
         .sort((a, b) => b.transfers_in_event - a.transfers_in_event)
@@ -139,6 +140,8 @@ async function sendSmsUpdates(
       topTransferredOut
         .sort((a, b) => b.transfers_out_event - a.transfers_out_event)
         .slice(0, 5),
+      updateTime,
+      ctx.db,
     );
 
     const userContact = await ctx.db.userContact.findUnique({
@@ -154,31 +157,53 @@ async function sendSmsUpdates(
   }
 }
 
-function getSmsBody(
+async function getSmsBody(
   user: UserPreferences,
   topTransferredIn: Player[],
   topTransferredOut: Player[],
-): string {  
-  const smsBody = `🔥 Here are your FPL updates 🔥
-  📈 Top Transferred In: 
-  ${topTransferredIn
-    .map(
-      (player, index) =>
-        `${index + 1}. ${player.first_name} - ${
-          player.second_name
-        }\n   Transfers In: ${player.transfers_in_event}`,
-    )
-    .join("\n")}
+  updateTime: string,
+  db: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
+): Promise<string> {
+  const reminderType = await db.reminderType.findUnique({
+    where: { id: user.reminder_type_id },
+  });
 
-  📉 Top Transferred Out:
-   ${topTransferredOut
-     .map(
-       (player, index) =>
-         `${index + 1}. ${player.first_name} - ${
-           player.second_name
-         }\n   Transfers Out: ${player.transfers_out_event}`,
-     )
-     .join("\n")}`;
+  let transferInText = null;
+  let transferOutText = null;
+  let fplUpdateHeader = null;
+
+  if (reminderType?.send_transfer_in && reminderType.send_transfer_out) {
+    fplUpdateHeader = "🔥 Here are your FPL updates 🔥";
+  }
+  if (reminderType?.send_transfer_in) {
+    transferInText = `📈 Top Transferred In: 
+    ${topTransferredIn
+      .map(
+        (player, index) =>
+          `${index + 1}. ${player.first_name} - ${
+            player.second_name
+          }\n   Transfers In: ${player.transfers_in_event}`,
+      )
+      .join("\n")}`;
+  }
+
+  if (reminderType?.send_transfer_out) {
+    transferOutText = `📉 Top Transferred Out:
+    ${topTransferredOut
+      .map(
+        (player, index) =>
+          `${index + 1}. ${player.first_name} - ${
+            player.second_name
+          }\n   Transfers Out: ${player.transfers_out_event}`,
+      )
+      .join("\n")}`;
+  }
+  const smsBody = `⏰ FPL deadline is in ${updateTime} ⏰
+  ${fplUpdateHeader}
+
+  ${transferInText}
+
+  ${transferOutText}`;
 
   return smsBody;
 }

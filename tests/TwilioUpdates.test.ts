@@ -39,12 +39,22 @@ const mockUserContact = {
   is_verified: true,
 };
 
+const mockReminderType = {
+  id: 55,
+  send_fixture_reminder: false,
+  send_transfer_in: true,
+  send_transfer_out: true,
+};
+
 const mockDb = {
   userPreferences: {
     findMany: jest.fn().mockResolvedValue(mockUserPreferences),
   },
   userContact: {
     findUnique: jest.fn().mockResolvedValue(mockUserContact),
+  },
+  reminderType: {
+    findUnique: jest.fn().mockResolvedValue(mockReminderType),
   },
 };
 
@@ -82,6 +92,7 @@ test("updateOneDay - valid time", async () => {
 
   expect(ctx.db.userPreferences.findMany).toHaveBeenCalledTimes(1);
   expect(ctx.db.userContact.findUnique).toHaveBeenCalledTimes(2);
+  expect(ctx.db.reminderType.findUnique).toHaveBeenCalledTimes(2);
   expect(ctx.fplService.getDeadline).toHaveBeenCalledTimes(1);
   expect(ctx.fplService.getTopTransferredIn).toHaveBeenCalledTimes(1);
   expect(ctx.fplService.getTopTransferredOut).toHaveBeenCalledTimes(1);
