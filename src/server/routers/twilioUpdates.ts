@@ -180,9 +180,9 @@ async function getSmsBody(
     where: { id: user.reminder_type_id },
   });
 
-  let transferInText = '';
-  let transferOutText = '';
-  let fplUpdateHeader = '';
+  let transferInText = "";
+  let transferOutText = "";
+  let fplUpdateHeader = "";
 
   if (reminderType?.send_transfer_in || reminderType?.send_transfer_out) {
     fplUpdateHeader = "🔥 Here are your FPL updates 🔥";
@@ -221,7 +221,6 @@ async function getSmsBody(
 }
 
 async function setCronForNextDeadline(delay: number, endpoint: string) {
-  console.log(delay / 1000);
   const url = `${process.env.QSTASH_BASE_URL}${endpoint}`;
   const authorizationToken = `Bearer ${process.env.QSTASH_AUTH_TOKEN}`;
 
@@ -229,8 +228,8 @@ async function setCronForNextDeadline(delay: number, endpoint: string) {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        'Authorization': authorizationToken,
-        'Upstash-Delay': `${delay / 1000}s`,
+        Authorization: authorizationToken,
+        "Upstash-Delay": `${delay / 1000}s`,
       },
     });
 
@@ -239,6 +238,8 @@ async function setCronForNextDeadline(delay: number, endpoint: string) {
       log.error(`Response body: ${await response.text()}`);
     }
   } catch (error) {
-    log.error("Error sending update request:", error.message);
+    if (error instanceof Error) {
+      log.error(error.message);
+    }
   }
 }

@@ -60,6 +60,7 @@ const mockDb = {
 
 const fplApiMock = mock(() => ({
   getDeadline: mock().mockResolvedValue(Promise.resolve(1699703519)), // Sat Nov 11 2023 11:51:59 GMT+0000
+  getNextDeadline: mock().mockResolvedValue(Promise.resolve(1699903519)), // Sat Nov 11 2023 11:51:59 GMT+0000
 
   topTransferredIn: mock().mockResolvedValue(
     Promise.resolve(TestHelper.getTransferredIn()),
@@ -71,6 +72,7 @@ const fplApiMock = mock(() => ({
 
 const fplServiceMock = {
   getDeadline: fplApiMock().getDeadline,
+  getNextDeadline: fplApiMock().getNextDeadline,
   getTopTransferredIn: fplApiMock().topTransferredIn,
   getTopTransferredOut: fplApiMock().topTransferredOut,
 };
