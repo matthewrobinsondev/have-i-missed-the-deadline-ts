@@ -7,6 +7,8 @@ export const appRouter = router({
   getUserPreferences: UserPreferencesRouter.getUserPreferences,
   updateUserPreferences: UserPreferencesRouter.updateUserPreferences,
   updateOneDay: TwilioUpdateRouter.updateOneDay,
+  updateThreeHours: TwilioUpdateRouter.updateThreeHours,
+  updateThirtyMinutes: TwilioUpdateRouter.updateThirtyMinutes,
   getUserPhoneNumber: PhoneNumberRouter.getPhoneNumber,
   registerPhoneNumber: PhoneNumberRouter.registerPhoneNumber,
   validatePhoneNumber: PhoneNumberRouter.validatePhoneNumber,

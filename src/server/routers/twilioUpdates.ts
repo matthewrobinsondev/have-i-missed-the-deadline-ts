@@ -43,6 +43,72 @@ export const TwilioUpdateRouter = router({
 
     return `SMS updates sent.`;
   }),
+  updateThreeHours: publicProcedure.mutation(async ({ ctx }) => {
+    const threeHoursTime = 18000;
+    const deadline = await ctx.fplService.getDeadline();
+    const valid = isUpdateTimeValid(deadline, threeHoursTime);
+
+    if (!valid) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Fpl Data not updated. Not sending SMS.",
+      });
+    }
+
+    const users = await ctx.db.userPreferences.findMany({
+      where: {
+        reminder_schedule: {
+          send_3_hours_before: true,
+        },
+      },
+    });
+
+    if (!users) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "No Users have selected this reminder type. Not sending SMS.",
+      });
+    }
+
+    log.info("Running cron for three hours before updates.");
+
+    await sendSmsUpdates(users, ctx);
+
+    return `SMS updates sent.`;
+  }),
+  updateThirtyMinutes: publicProcedure.mutation(async ({ ctx }) => {
+    const thirtyMinutesTime = 1800;
+    const deadline = await ctx.fplService.getDeadline();
+    const valid = isUpdateTimeValid(deadline, thirtyMinutesTime);
+
+    if (!valid) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Fpl Data not updated. Not sending SMS.",
+      });
+    }
+
+    const users = await ctx.db.userPreferences.findMany({
+      where: {
+        reminder_schedule: {
+          send_30_minutes_before: true,
+        },
+      },
+    });
+
+    if (!users) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "No Users have selected this reminder type. Not sending SMS.",
+      });
+    }
+
+    log.info("Running cron for thirty minutes before updates.");
+
+    await sendSmsUpdates(users, ctx);
+
+    return `SMS updates sent.`;
+  }),
 });
 
 function isUpdateTimeValid(deadline: number, oneDayTime: number) {
@@ -92,7 +158,7 @@ function getSmsBody(
   user: UserPreferences,
   topTransferredIn: Player[],
   topTransferredOut: Player[],
-): string {
+): string {  
   const smsBody = `🔥 Here are your FPL updates 🔥
   📈 Top Transferred In: 
   ${topTransferredIn
