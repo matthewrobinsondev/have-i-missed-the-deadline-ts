@@ -48,7 +48,10 @@ describe("updateUserPreferences", () => {
     const caller = appRouter.createCaller({ db: mockDb });
 
     await expect(caller.updateUserPreferences(mockInput)).rejects.toEqual(
-      new TRPCError({ code: "UNAUTHORIZED", message: "User not authenticated" })
+      new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "User not authenticated",
+      }),
     );
   });
 });

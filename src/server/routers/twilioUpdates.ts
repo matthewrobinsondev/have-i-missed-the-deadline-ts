@@ -9,7 +9,7 @@ import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const TwilioUpdateRouter = router({
   updateOneDay: publicProcedure.mutation(async ({ ctx }) => {
-    const oneDayTime = 86400000;
+    const oneDayTime = 86400;
     const deadline = await ctx.fplService.getDeadline();
     const valid = isUpdateTimeValid(deadline, oneDayTime);
 
@@ -46,6 +46,7 @@ export const TwilioUpdateRouter = router({
 function isUpdateTimeValid(deadline: number, oneDayTime: number) {
   const currentTime = Date.now();
   const timeDifference = currentTime - deadline;
+  console.log(timeDifference, oneDayTime);
   const valid = timeDifference < oneDayTime;
   return valid;
 }

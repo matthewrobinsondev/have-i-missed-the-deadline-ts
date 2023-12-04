@@ -1,8 +1,9 @@
-import { test, expect, mock, beforeEach, jest, snapshot } from "bun:test";
+import { test, expect, mock, beforeEach, jest } from "bun:test";
 import { appRouter } from "../src/server";
 import { TestHelper } from "./TestHelper";
+import { TRPCError } from "@trpc/server";
 
-const mockDateNow = () => 1699617119;
+const mockDateNow = () => 1699617119; // Fri Nov 10 2023 11:51:59 GMT+0000
 
 beforeEach(() => {
   Date.now = mockDateNow;
@@ -48,12 +49,13 @@ const mockDb = {
 };
 
 const fplApiMock = mock(() => ({
-  getDeadline: mock().mockResolvedValue(Promise.resolve(1699703519)),
+  getDeadline: mock().mockResolvedValue(Promise.resolve(1699703519)), // Sat Nov 11 2023 11:51:59 GMT+0000
+
   topTransferredIn: mock().mockResolvedValue(
-    Promise.resolve(TestHelper.getTransferredIn())
+    Promise.resolve(TestHelper.getTransferredIn()),
   ),
   topTransferredOut: mock().mockResolvedValue(
-    Promise.resolve(TestHelper.getTransferredOut())
+    Promise.resolve(TestHelper.getTransferredOut()),
   ),
 }));
 
@@ -86,33 +88,21 @@ test("updateOneDay - valid time", async () => {
   expect(ctx.twilioApi.sendSmsUpdate).toHaveBeenCalledTimes(
     mockUserPreferences.length,
   );
+});
 
-  // TODO: Implement when bun fixes this
-  // expect(ctx.twilioApi.sendSmsUpdate).toHaveBeenCalledWith(
-  //   "+test", // expected phone number for the second call,
-  //   `🔥 Here are your FPL updates 🔥
-  //   📈 Top Transferred In: 
-  //   1. Player6 - LastName6
-  //    Transfers In: 8306
-  // 2. Player7 - LastName7
-  //    Transfers In: 7307
-  // 3. Player5 - LastName5
-  //    Transfers In: 6305
-  // 4. Player8 - LastName8
-  //    Transfers In: 5308
-  // 5. Player2 - LastName2
-  //    Transfers In: 3402
-  
-  //   📉 Top Transferred Out:
-  //    1. Player11 - LastName11
-  //    Transfers Out: 11411
-  // 2. Player22 - LastName22
-  //    Transfers Out: 7422
-  // 3. Player23 - LastName23
-  //    Transfers Out: 6423
-  // 4. Player21 - LastName21
-  //    Transfers Out: 4921
-  // 5. Player17 - LastName17
-  //    Transfers Out: 4317`,
-  // );
+test("updateOneDay - invalid time", async () => {
+  Date.now = () => 1700912695; // Sat Nov 25 2023 11:44:55 GMT+0000
+
+  const ctx = {
+    db: mockDb,
+    fplService: fplServiceMock,
+    twilioApi: twilioApiMock,
+  };
+  const caller = appRouter.createCaller(ctx);
+  await expect(caller.updateOneDay()).rejects.toEqual(
+    new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Invalid Time Request. Not sending SMS.",
+    }),
+  );
 });
