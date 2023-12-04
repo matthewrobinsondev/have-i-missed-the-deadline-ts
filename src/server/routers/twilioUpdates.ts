@@ -7,6 +7,8 @@ import { FplService } from "@/app/fpl/FplService";
 import TwilioApi from "@/app/third-party/TwilioApi";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
+const tolerance = 180;
+
 export const TwilioUpdateRouter = router({
   updateOneDay: publicProcedure.mutation(async ({ ctx }) => {
     const oneDayTime = 86400;
@@ -45,10 +47,8 @@ export const TwilioUpdateRouter = router({
 
 function isUpdateTimeValid(deadline: number, oneDayTime: number) {
   const currentTime = Date.now();
-  const timeDifference = currentTime - deadline;
-  console.log(timeDifference, oneDayTime);
-  const valid = timeDifference < oneDayTime;
-  return valid;
+  const expectedDeadline = currentTime + oneDayTime;
+  return Math.abs(expectedDeadline - deadline) <= tolerance;
 }
 
 async function sendSmsUpdates(
@@ -68,10 +68,10 @@ async function sendSmsUpdates(
     const smsBody = getSmsBody(
       user,
       topTransferredIn
-        .toSorted((a, b) => b.transfers_in_event - a.transfers_in_event)
+        .sort((a, b) => b.transfers_in_event - a.transfers_in_event)
         .slice(0, 5),
       topTransferredOut
-        .toSorted((a, b) => b.transfers_out_event - a.transfers_out_event)
+        .sort((a, b) => b.transfers_out_event - a.transfers_out_event)
         .slice(0, 5),
     );
 
