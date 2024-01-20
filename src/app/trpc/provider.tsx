@@ -14,7 +14,7 @@ export default function TrpcProvider({
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: `${process.env.APPLICATION_URL}/api/trpc`,
+          url: `/api/trpc`,
         }),
       ],
       transformer: superjson,
