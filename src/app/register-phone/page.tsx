@@ -119,9 +119,9 @@ export default function RegisterPhone() {
         </CardContent>
       </Card>
 
-      <div className="mx-4 md:mx-auto max-w-sm mt-10">
+      <div className="mx-4 md:mx-auto max-w-sm mt-10 text-center">
         <Button
-          className="w-full text-white"
+          size={"lg"}
           variant="destructive"
           onClick={handleDeletePhoneNumber}
         >
