@@ -42,7 +42,9 @@ export const TwilioUpdateRouter = router({
 
     await sendSmsUpdates(users, ctx, "One Day");
 
-    await setCronForNextDeadline(nextDeadline - Date.now(), "updateOneDay");
+    const delay = Math.floor((nextDeadline - Date.now()) / 1000);
+
+    await setCronForNextDeadline(delay, "updateOneDay");
 
     return `SMS updates sent.`;
   }),
@@ -78,7 +80,9 @@ export const TwilioUpdateRouter = router({
 
     await sendSmsUpdates(users, ctx, "Three Hours");
 
-    await setCronForNextDeadline(nextDeadline - Date.now(), "updateThreeHours");
+    const delay = Math.floor((nextDeadline - Date.now()) / 1000);
+
+    await setCronForNextDeadline(delay, "updateThreeHours");
 
     return `SMS updates sent.`;
   }),
@@ -114,10 +118,9 @@ export const TwilioUpdateRouter = router({
 
     await sendSmsUpdates(users, ctx, "30 Minutes");
 
-    await setCronForNextDeadline(
-      nextDeadline - Date.now(),
-      "updateThirtyMinutes",
-    );
+    const delay = Math.floor((nextDeadline - Date.now()) / 1000);
+
+    await setCronForNextDeadline(delay, "updateThirtyMinutes");
 
     return `SMS updates sent.`;
   }),
@@ -229,7 +232,7 @@ async function setCronForNextDeadline(delay: number, endpoint: string) {
       method: "POST",
       headers: {
         Authorization: authorizationToken,
-        "Upstash-Delay": `${delay / 1000}s`,
+        "Upstash-Delay": `${delay}s`,
       },
     });
 
